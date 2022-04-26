@@ -1,0 +1,96 @@
+<!--{% load static %}-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+<!--  <link rel="stylesheet" href="{% static 'APP/css/style.css' %}" type="text/css">-->
+<script type="text/javascript">
+  function showOrHide(cb, cat) {
+    cb = document.getElementById(cb);
+    cat = document.getElementById(cat);
+    if (cb.checked) cat.style.display = "block";
+    else cat.style.display = "none";
+  }
+</script>
+</head>
+<body>
+
+<form>
+        {% csrf_token %}
+
+    <fieldset>
+      <legend align="center"><h3>Калькулятор матриц</h3></legend>
+<!--      <div data-id="A" data-sizes="3x3" data-type="simple"></div>-->
+        <h3 style="margin-left: 8%;">Матрица А</h3>
+      {% for i in N %}
+        {% for j in M %}
+            <input name='1' type="text" style="width: 80px; border-radius: 10px; height: 25px; font: bold  164px; margin-left: 1%; font-size: 20px; text-align: center;">
+
+        {% endfor %}
+        <br><br>
+      {% endfor %}
+        <a href="{% url 'ReduceMatrix' %}"><input value="Уменьшить матрицу на 1х1" type="button" style="width: 230px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 1%; font-size: 15px; text-align: center;"></a>
+      <a href="{% url 'ExtensMatrix' %}"><input value="Расширить матрицу на 1х1" type="button" style="width: 230px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 1%; font-size: 15px; text-align: center;"></a>
+        <h2>Задайте матрицу A:</h2>
+        {% csrf_token %}
+    <h3>Кол-во строк:<input name="lineSize" type="text" style="width: 80px; border-radius: 10px; height: 25px; font: bold  164px; margin-left: 1%; font-size: 20px; text-align: center;">
+        Кол-во столбцов:<input name="columnSize" type="text" style="width: 80px; border-radius: 10px; height: 25px; font: bold  164px; margin-left: 1%; font-size: 20px; text-align: center;">
+        <input formaction="{% url 'InputMatrix' %}" formmethod="post" type="submit" value="Задать" style="width: 160px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 1%; font-size: 15px; text-align: center;">
+</h3>
+
+              <input value="Транспонировать" formaction="{% url 'TransposeMatrix' %}" formmethod="post" type="submit" style="width: 160px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 0%; font-size: 15px; text-align: center;"></a>
+              <input value="Найти определитель" formaction="{% url 'DeterminantMatrix' %}" formmethod="post" type="submit" style="width: 160px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 1%; font-size: 15px; text-align: center;"></a>
+
+
+<!--      <div class="style1">-->
+<!--  <div class="style1">-->
+          <h3><input type = 'checkbox' id = 'cb1' style="transform:scale(1.5); opacity:1.2;" onchange = 'showOrHide("cb1", "cat1");'/> Задать матрицу B</h3>
+  <div id = 'cat1' style = 'display: none;'>
+      <h2>Задайте матрицу В:</h2>
+      {% for i in nxB %}
+        {% for j in mxB %}
+            <input name='2' type="text" style="width: 80px; border-radius: 10px; height: 25px; font: bold  164px; margin-left: 1%; font-size: 20px; text-align: center;">
+
+        {% endfor %}
+        <br><br>
+      {% endfor %}
+
+            <h3>Кол-во строк:<input name="lineSizeB" type="text" style="width: 80px; border-radius: 10px; height: 25px; font: bold  164px; margin-left: 1%; font-size: 20px; text-align: center;">
+        Кол-во столбцов:<input name="columnSizeB" type="text" style="width: 80px; border-radius: 10px; height: 25px; font: bold  164px; margin-left: 1%; font-size: 20px; text-align: center;">
+        <input formaction="{% url 'InputMatrixB' %}" formmethod="post" type="submit" value="Задать" style="width: 160px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 1%; font-size: 15px; text-align: center;">
+        <br><br>
+
+</h3>
+
+    <input formaction="{% url 'AdditionMatrix' %}" formmethod="post" type="submit" value="A+B" style="width: 160px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 1%; font-size: 15px; text-align: center;">
+    <input formaction="{% url 'DifferenceMatrix' %}" formmethod="post" type="submit" value="A-B" style="width: 160px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 5%; font-size: 15px; text-align: center;">
+    <input formaction="{% url 'MultiplicationMatrix' %}" formmethod="post" type="submit" value="A*B" style="width: 160px; border-radius: 10px; height: 30px; font: bold  164px; margin-left: 5%; font-size: 15px; text-align: center;">
+
+  </div>
+
+
+<!--  </div>-->
+<!--</div>-->
+
+    </fieldset>
+</form>
+
+
+{% if result_text %}
+<h2>{{ result_text }} {{ result }}</h2>
+{% endif %}
+{% if matrix_text %}
+<h2> {{ matrix_text }} </h2>
+{% for i in matrix %}
+<h1>
+    {% for j in i %}
+        {{ j }}
+    {% endfor %}</h1>
+{% endfor %}
+{% endif %}
+<br>
+
+
+</body>
+</html>
